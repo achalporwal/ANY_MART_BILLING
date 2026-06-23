@@ -25,7 +25,8 @@ Make sure the target PC has:
    - Create the `dmart` database and configure user passwords.
    - Compile all Java source files.
    - Launch the web server on http://localhost:8080.
-   - 
+  
+      
 #### Step 3: Admin
    1. Username : admin1 Password : admin123
    2. Username : cashier1 Password : cashier123
