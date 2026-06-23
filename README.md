@@ -11,7 +11,7 @@ We have created a self-healing startup script that handles database initializati
 ### Step 1: Prerequisites
 Make sure the target PC has:
 1. **Java JDK 11 or higher** installed. 
-   - 📥 If not installed, download from: [Adoptium Temurin JDK 17 (Recommended)](https://adoptium.net/temurin/releases/)
+   - 📥 If not installed, download from: [Adoptium Temurin JDK 17 (Recommended) or JDK 25 (Latest LTS)](https://adoptium.net/temurin/releases/)
 2. **MySQL Server** installed. 
    - 📥 If not installed, download from: [MySQL Community Installer](https://dev.mysql.com/downloads/installer/) (Select the MySQL Server option during installation).
    - (Note: If MySQL is installed but not running, our `start.bat` script will automatically attempt to launch it on port `3306` in the background).
