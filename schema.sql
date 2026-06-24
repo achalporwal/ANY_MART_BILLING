@@ -1,14 +1,11 @@
 CREATE DATABASE Dmart;
 USE Dmart;
-
--- Drop tables if they exist (for clean setup)
 DROP TABLE IF EXISTS bill_items;
 DROP TABLE IF EXISTS bills;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS customers;
 DROP TABLE IF EXISTS users;
 
--- 1. Users Table (Sub-Admins and Super-Admins)
 CREATE TABLE users (
     user_id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -17,7 +14,6 @@ CREATE TABLE users (
     is_active BOOLEAN NOT NULL DEFAULT 1
 );
 
--- 1b. Cashier Drafts Table
 CREATE TABLE cashier_drafts (
     cashier_id VARCHAR(50) PRIMARY KEY,
     draft_json TEXT NOT NULL,
@@ -25,7 +21,6 @@ CREATE TABLE cashier_drafts (
     FOREIGN KEY (cashier_id) REFERENCES users(user_id)
 );
 
--- 2. Customers Table
 CREATE TABLE customers (
     customer_id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -34,8 +29,6 @@ CREATE TABLE customers (
     location VARCHAR(100)
 );
 
-
--- 3. Products Table
 CREATE TABLE products (
     product_id VARCHAR(50) PRIMARY KEY,
     product_name VARCHAR(150) NOT NULL,
@@ -47,7 +40,6 @@ CREATE TABLE products (
     held_quantity INT NOT NULL DEFAULT 0
 );
 
--- 4. Bills Table
 CREATE TABLE bills (
     bill_id VARCHAR(50) PRIMARY KEY,
     customer_id VARCHAR(50),
@@ -66,7 +58,6 @@ CREATE TABLE bills (
     FOREIGN KEY (cashier_id) REFERENCES users(user_id)
 );
 
--- 5. Bill Items Table
 CREATE TABLE bill_items (
     bill_item_id VARCHAR(50) PRIMARY KEY,
     bill_id VARCHAR(50) NOT NULL,
@@ -83,7 +74,6 @@ CREATE TABLE bill_items (
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
--- Seed Initial Data
 INSERT INTO users (user_id, name, role, password) VALUES 
 ('admin1', 'Super Admin Head', 'SUPER_ADMIN', 'admin123'),
 ('cashier1', 'Sub Admin Cashier 1', 'SUB_ADMIN', 'cashier123'),
