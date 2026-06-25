@@ -14,17 +14,14 @@ Connection conn = null;
 try 
 {
 conn = DatabaseConfig.getConnection();
-// 1. Check if database tables are already initialized (check if 'users' table exists)
 DatabaseMetaData dbm = conn.getMetaData();
 String catalog = conn.getCatalog();
 ResultSet tables = dbm.getTables(catalog, null, "users", null);
 if (tables.next()) 
 {
 System.out.println("Database tables detected. Auto-initialization skipped.");
-// Programmatic Migration Checks
 try (Statement stmt = conn.createStatement()) 
 {
-// 1. users.is_active
 try
 {
 ResultSet cols = dbm.getColumns(catalog, null, "users", "is_active");
@@ -39,7 +36,6 @@ catch (Exception e)
 { 
 System.err.println("Users migration error: " + e.getMessage()); 
 }
-// 2. bills.payment_mode
 try 
 {
 ResultSet cols = dbm.getColumns(catalog, null, "bills", "payment_mode");
@@ -54,7 +50,6 @@ catch (Exception e)
 { 
 System.err.println("Bills payment_mode migration error: " + e.getMessage()); 
 }
-// 3. bills.cash_received
 try 
 {
 ResultSet cols = dbm.getColumns(catalog, null, "bills", "cash_received");
@@ -69,7 +64,6 @@ catch (Exception e)
 { 
 System.err.println("Bills cash_received migration error: " + e.getMessage()); 
 }
-// 4. bills.cash_returned
 try
 {
 ResultSet cols = dbm.getColumns(catalog, null, "bills", "cash_returned");
@@ -84,7 +78,6 @@ catch (Exception e)
 { 
 System.err.println("Bills cash_returned migration error: " + e.getMessage()); 
 }
-// 5. bills.status
 try 
 {
 ResultSet cols = dbm.getColumns(catalog, null, "bills", "status");
@@ -99,7 +92,6 @@ catch (Exception e)
 { 
 System.err.println("Bills status migration error: " + e.getMessage()); 
 }
-// 6. customers unique index
 try 
 {
 DatabaseMetaData metadata = conn.getMetaData();
@@ -125,7 +117,6 @@ catch (Exception e)
 { 
 System.err.println("Index migration error: " + e.getMessage()); 
 }
-// 7. products.alert_threshold
 try 
 {
 ResultSet cols = dbm.getColumns(catalog, null, "products", "alert_threshold");
@@ -140,7 +131,6 @@ catch (Exception e)
 { 
 System.err.println("Products alert_threshold migration error: " + e.getMessage()); 
 }
-// 8. products.held_quantity
 try 
 {
 ResultSet cols = dbm.getColumns(catalog, null, "products", "held_quantity");
@@ -155,7 +145,6 @@ catch (Exception e)
 { 
 System.err.println("Products held_quantity migration error: " + e.getMessage()); 
 }
-// 9. cashier_drafts table
 try 
 {
 ResultSet tbls = dbm.getTables(catalog, null, "cashier_drafts", null);
@@ -177,15 +166,12 @@ System.err.println("Migration outer statement error: " + ex.getMessage());
 }
 return;
 }
-// 2. Read schema.sql from the project root directory
 if (!Files.exists(Paths.get("schema.sql"))) 
 {
 System.err.println("Warning: schema.sql not found at project root. Skipping database seeding.");
 return;
 }
 String schemaContent = new String(Files.readAllBytes(Paths.get("schema.sql")), "UTF-8");
-// 3. Split the SQL file by semicolons to execute statements individually
-// Note: This is a simple parser. It ignores lines starting with '--'.
 String[] rawStatements = schemaContent.split(";");
 try (Statement stmt = conn.createStatement()) 
 {
