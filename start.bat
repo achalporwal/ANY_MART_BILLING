@@ -7,7 +7,7 @@ echo    D-Mart Billing System - Portable Launcher
 echo ===================================================
 echo.
 
-rem --- Step 1: Check Java ---
+rem 
 java -version >nul 2>&1
 if errorlevel 1 (
 echo [ERROR] Java is not installed or not in PATH.
@@ -17,7 +17,7 @@ exit /b 1
 )
 echo [OK] Java detected.
 
-rem --- Step 2: Check and start MySQL database ---
+rem 
 netstat -ano | findstr :3306 | findstr LISTENING >nul 2>&1
 if errorlevel 1 (
 echo [INFO] MySQL is not running on port 3306. Attempting to start local instance...
@@ -68,7 +68,7 @@ if exist "!MYSQL_CLI_PATH!" (
 echo [OK] MySQL is already running on port 3306.
 )
 
-rem --- Step 3: Compile Java sources ---
+rem 
 echo.
 echo [STEP] Compiling Java source files...
 if not exist "bin" mkdir bin
@@ -80,7 +80,7 @@ exit /b 1
 )
 echo [OK] Compilation successful.
 
-rem --- Step 4: Start the server ---
+rem 
 echo.
 echo [STEP] Starting D-Mart Billing HTTP Server...
 echo.
