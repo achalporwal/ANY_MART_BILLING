@@ -7,71 +7,71 @@ DROP TABLE IF EXISTS customers;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    user_id VARCHAR(50) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    role VARCHAR(20) NOT NULL, -- SUPER_ADMIN, SUB_ADMIN
-    password VARCHAR(100) NOT NULL,
-    is_active BOOLEAN NOT NULL DEFAULT 1
+user_id VARCHAR(50) PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+role VARCHAR(20) NOT NULL, -- SUPER_ADMIN, SUB_ADMIN
+password VARCHAR(100) NOT NULL,
+is_active BOOLEAN NOT NULL DEFAULT 1
 );
 
 CREATE TABLE cashier_drafts (
-    cashier_id VARCHAR(50) PRIMARY KEY,
-    draft_json TEXT NOT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (cashier_id) REFERENCES users(user_id)
+cashier_id VARCHAR(50) PRIMARY KEY,
+draft_json TEXT NOT NULL,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (cashier_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE customers (
-    customer_id VARCHAR(50) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    mobile_number VARCHAR(15) UNIQUE NOT NULL,
-    age INT,
-    location VARCHAR(100)
+customer_id VARCHAR(50) PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+mobile_number VARCHAR(15) UNIQUE NOT NULL,
+age INT,
+location VARCHAR(100)
 );
 
 CREATE TABLE products (
-    product_id VARCHAR(50) PRIMARY KEY,
-    product_name VARCHAR(150) NOT NULL,
-    mrp DECIMAL(10, 2) NOT NULL,           
-    prp DECIMAL(10, 2) NOT NULL,           
-    gst_percentage DECIMAL(5, 2) NOT NULL,  
-    available_quantity INT NOT NULL DEFAULT 0,
-    alert_threshold INT NOT NULL DEFAULT 10,
-    held_quantity INT NOT NULL DEFAULT 0
+product_id VARCHAR(50) PRIMARY KEY,
+product_name VARCHAR(150) NOT NULL,
+mrp DECIMAL(10, 2) NOT NULL,           
+prp DECIMAL(10, 2) NOT NULL,           
+gst_percentage DECIMAL(5, 2) NOT NULL,  
+available_quantity INT NOT NULL DEFAULT 0,
+alert_threshold INT NOT NULL DEFAULT 10,
+held_quantity INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE bills (
-    bill_id VARCHAR(50) PRIMARY KEY,
-    customer_id VARCHAR(50),
-    cashier_id VARCHAR(50) NOT NULL,
-    bill_date TIMESTAMP NOT NULL,
-    taxable_value DECIMAL(10, 2) NOT NULL,
-    cgst DECIMAL(10, 2) NOT NULL,
-    sgst DECIMAL(10, 2) NOT NULL,
-    discount DECIMAL(10, 2) NOT NULL,
-    final_amount DECIMAL(10, 2) NOT NULL,
-    payment_mode VARCHAR(20) NOT NULL DEFAULT 'CASH',
-    cash_received DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-    cash_returned DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-    status VARCHAR(20) NOT NULL DEFAULT 'COMPLETED',
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
-    FOREIGN KEY (cashier_id) REFERENCES users(user_id)
+bill_id VARCHAR(50) PRIMARY KEY,
+customer_id VARCHAR(50),
+cashier_id VARCHAR(50) NOT NULL,
+bill_date TIMESTAMP NOT NULL,
+taxable_value DECIMAL(10, 2) NOT NULL,
+cgst DECIMAL(10, 2) NOT NULL,
+sgst DECIMAL(10, 2) NOT NULL,
+discount DECIMAL(10, 2) NOT NULL,
+final_amount DECIMAL(10, 2) NOT NULL,
+payment_mode VARCHAR(20) NOT NULL DEFAULT 'CASH',
+cash_received DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+cash_returned DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+status VARCHAR(20) NOT NULL DEFAULT 'COMPLETED',
+FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+FOREIGN KEY (cashier_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE bill_items (
-    bill_item_id VARCHAR(50) PRIMARY KEY,
-    bill_id VARCHAR(50) NOT NULL,
-    product_id VARCHAR(50) NOT NULL,
-    quantity INT NOT NULL,
-    mrp DECIMAL(10, 2) NOT NULL,
-    prp DECIMAL(10, 2) NOT NULL,
-    taxable_value DECIMAL(10, 2) NOT NULL,
-    cgst DECIMAL(10, 2) NOT NULL,
-    sgst DECIMAL(10, 2) NOT NULL,
-    discount DECIMAL(10, 2) NOT NULL,
-    final_amount DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (bill_id) REFERENCES bills(bill_id),
-    FOREIGN KEY (product_id) REFERENCES products(product_id)
+bill_item_id VARCHAR(50) PRIMARY KEY,
+bill_id VARCHAR(50) NOT NULL,
+product_id VARCHAR(50) NOT NULL,
+quantity INT NOT NULL,
+mrp DECIMAL(10, 2) NOT NULL,
+prp DECIMAL(10, 2) NOT NULL,
+taxable_value DECIMAL(10, 2) NOT NULL,
+cgst DECIMAL(10, 2) NOT NULL,
+sgst DECIMAL(10, 2) NOT NULL,
+discount DECIMAL(10, 2) NOT NULL,
+final_amount DECIMAL(10, 2) NOT NULL,
+FOREIGN KEY (bill_id) REFERENCES bills(bill_id),
+FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
 INSERT INTO users (user_id, name, role, password) VALUES 
